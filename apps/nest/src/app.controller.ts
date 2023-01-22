@@ -12,4 +12,11 @@ export class AppController {
     const res = await this.appService.login(body);
     return { data: res };
   }
+
+  @Post('/aph/products')
+  // eslint-disable-next-line @typescript-eslint/ban-types
+  async newProduct(@Body() body: any): Promise<Object> {
+    const res = await this.appService.products(body);
+    return { data: res };
+  }
 }

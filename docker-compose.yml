@@ -1,0 +1,19 @@
+version: '3'
+services:
+  web:
+    build: ./apps/nest
+    ports:
+      - 3001:3001
+  login:
+    build: ./apps/login
+    ports:
+      - 3002:3002
+    environment:
+      - db_mongo_user=castanolagustin
+      - db_mongo_password=DEDXU57JyhCxLXqz
+      - SECRET=not_so_secret
+  aph:
+    build: ./apps/aph
+    ports:
+      - 3003:3003
+    

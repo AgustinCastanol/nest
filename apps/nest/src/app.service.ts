@@ -13,4 +13,11 @@ export class AppService {
     const res = await this.clienteLogin.send('new_login', user).toPromise();
     return res;
   }
+
+  async products(product: any) {
+    const res = await this.clienteLogin
+      .send('get_products', product)
+      .toPromise();
+    return res;
+  }
 }

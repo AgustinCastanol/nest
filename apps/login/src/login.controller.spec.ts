@@ -13,10 +13,4 @@ describe('LoginController', () => {
 
     loginController = app.get<LoginController>(LoginController);
   });
-
-  describe('root', () => {
-    it('should return "Hello World!"', () => {
-      expect(loginController.getHello()).toBe('Hello World!');
-    });
-  });
 });
