@@ -1,19 +1,48 @@
 version: '3'
 services:
-  web:
-    build: ./apps/nest
+  admin:
+    build: ./admin
     ports:
-      - 3001:3001
-  login:
-    build: ./apps/login
-    ports:
-      - 3002:3002
+      - "3001:3001"
     environment:
+      - PORT=3001
+      - NATS_PORT=4222
+    links:
+      - nats
+  login:
+    build: ./login
+    ports:
+      - "3002:3002"
+    environment:
+      - db_mongo_uri=mongodb+srv://castanolagustin:<password>@cluster0.lpr1s.mongodb.net/?retryWrites=true&w=majority
       - db_mongo_user=castanolagustin
-      - db_mongo_password=DEDXU57JyhCxLXqz
+      - db_mongo_pass=DEDXU57JyhCxLXqz
       - SECRET=not_so_secret
   aph:
-    build: ./apps/aph
+    build: ./aph
     ports:
-      - 3003:3003
-    
+      - "3003:3003"
+    environment:
+      - db_postgres_db=products
+      - db_postgres_user=postgres
+      - db_postgres_pass=postgrespw
+      - db_postgres_host=localhost
+      - db_postgres_port=32768
+    links:
+      - pgAph
+      - nats
+  pgAph:
+    image: postgres
+    ports:
+      - "32768:5432"
+    environment:
+      - POSTGRES_PASSWORD=postgrespw
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=products
+  nats:
+    image: nats-streaming
+    ports:
+      - "4222:4222"
+    volumes:
+      - ./nats.conf:/nats.conf
+    command: ["-c", "/nats.conf"]
